@@ -15,7 +15,7 @@ permissions: {}
 
 jobs:
   gates:
-    uses: MartynPin/factory-ci/.github/workflows/gates.yml@a93fa6163e8e34dabbb4a73d1477c6736edac1cf
+    uses: Online-Base1/factory-ci/.github/workflows/gates.yml@a93fa6163e8e34dabbb4a73d1477c6736edac1cf
     with:
       node-version: "22"
       run-e2e: true
