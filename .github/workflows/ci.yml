@@ -11,10 +11,19 @@ on:
   push:
     branches: [main]
 
+# Пусто по умолчанию: ни одна джоба не получает прав, которых не просила.
 permissions: {}
 
 jobs:
   gates:
+    # Права ЗДЕСЬ — это ВЕРХНЯЯ ГРАНИЦА для вызываемого workflow: reusable
+    # workflow не может запросить больше, чем дал вызывающий. Без этого блока
+    # (при `permissions: {}` на верхнем уровне) gates.yml запрашивает
+    # contents: read, получает отказ на разборе и падает за 0 секунд с
+    # сообщением «workflow file issue» — до создания единой джобы.
+    permissions:
+      contents: read
+      pull-requests: write
     uses: MartynPin/factory-ci/.github/workflows/gates.yml@a93fa6163e8e34dabbb4a73d1477c6736edac1cf
     with:
       node-version: "22"
