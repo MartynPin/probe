@@ -1,0 +1,14 @@
+// Схема проекта. Модели добавляет кодер по критериям приёмки.
+//
+// После любой правки этого файла клиент обязан быть перегенерирован ДО
+// прогона гейтов, иначе типы будут описывать старую схему:
+//   npx prisma migrate dev --name ИМЯ
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}

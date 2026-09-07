@@ -15,4 +15,14 @@ const eslintConfig = defineConfig([
   ]),
 ]);
 
-export default eslintConfig;
+// Тестовые файлы — критерий приёмки; их пишет другая роль и кодеру они
+// закрыты на запись. `any` в них при работе с деревом узлов и клиентом ORM
+// не является ошибкой продуктового кода. Продуктовый код остаётся под
+// строгим правилом. Основание: factory-knowledge/lessons/L-002, L-003.
+export default [
+  ...eslintConfig,
+  {
+    files: ["tests/**/*.ts", "tests/**/*.tsx"],
+    rules: { "@typescript-eslint/no-explicit-any": "off" },
+  },
+];

@@ -1,0 +1,21 @@
+# Гейты продуктового репозитория. Вся логика — в factory-ci; здесь только вызов.
+#
+# ВНИМАНИЕ: `@main` подставлен как заглушка и обязан быть заменён на полный
+# 40-символьный SHA коммита factory-ci. Ссылка на ветку означает, что правка в
+# factory-ci немедленно меняет проверки во всех репозиториях, включая уже
+# открытые PR. `setup/verify.sh` считает `@main` расхождением.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  gates:
+    uses: MartynPin/factory-ci/.github/workflows/gates.yml@a93fa6163e8e34dabbb4a73d1477c6736edac1cf
+    with:
+      node-version: "22"
+      run-e2e: true
