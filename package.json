@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "test:unit": "vitest run --passWithNoTests",
     "test:e2e": "playwright test",
     "preflight": "bash scripts/preflight.sh",
