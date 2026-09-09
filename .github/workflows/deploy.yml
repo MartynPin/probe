@@ -1,55 +1,18 @@
-# Деплой. Единственное место, где существуют секреты.
-#
-# Джобы гейтов не объявляют environment — значит секретов в их окружении нет
-# физически, а не «есть, но не используются». Это же разводит джобу, видящую
-# код из PR, и джобу, имеющую доступ к боевым ключам.
-name: deploy
+# Production deployment is intentionally fail-closed until a managed target,
+# immutable artifact handoff and owner approval are configured and tested.
+name: deploy-disabled
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions: {}
 
-concurrency:
-  group: deploy-production
-  cancel-in-progress: false
-
 jobs:
-  deploy:
+  blocked:
     runs-on: ubuntu-latest
-    # Ручной апрув владельца настраивается на самом окружении:
-    # Settings → Environments → production → Required reviewers.
-    environment: production
-    permissions:
-      contents: read
-      deployments: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: npm
-      - run: npm ci
-      - run: npm run build
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-
-      - name: Деплой
-        env:
-          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-        run: |
-          echo "Команда деплоя подставляется при заведении проекта."
-          echo "Секреты приходят из окружения production и нигде больше не видны."
-
-      - name: Синтетика по боевому URL
-        env:
-          PROD_URL: ${{ vars.PROD_URL }}
+      - name: Production deployment is not configured
         shell: bash
         run: |
-          # Проверка идёт по боевому адресу, а не по превью: решение Шага 22.
-          [ -n "${PROD_URL:-}" ] || { echo "PROD_URL не задан — проверять нечего"; exit 1; }
-          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$PROD_URL")
-          echo "$PROD_URL → $code"
-          [ "$code" = "200" ] || exit 1
+          echo "::error::Production deployment is disabled. Configure a managed target, immutable artifact handoff and owner approval before enabling it."
+          exit 1
