@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: "tests/e2e",
   use: { baseURL: "http://localhost:3000" },
   webServer: {
-    command: "npm run start",
+    command: "npx --no-install next start",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
   },
